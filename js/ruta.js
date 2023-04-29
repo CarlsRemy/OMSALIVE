@@ -138,6 +138,7 @@ function initMap() {
 
       // Solicita el permiso para recibir notificaciones
       messaging.requestPermission().then(() => {
+        alert('Permiso concedido')
         console.log('Permiso concedido');
 
         // Obtiene el token de registro del dispositivo

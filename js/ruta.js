@@ -145,6 +145,7 @@ function initMap() {
 
         // Registramos un callback para recibir los mensajes
         messaging.onMessage((payload) => {
+          alert('Mensaje recibido:'+ payload)
           console.log('Mensaje recibido:', payload);
           // Aquí puedes hacer lo que necesites con el mensaje recibido
         });

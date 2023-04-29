@@ -141,6 +141,13 @@ function initMap() {
         console.log('Permiso concedido');
 
         // Obtiene el token de registro del dispositivo
+
+        // Registramos un callback para recibir los mensajes
+        messaging.onMessage((payload) => {
+          console.log('Mensaje recibido:', payload);
+          // Aquí puedes hacer lo que necesites con el mensaje recibido
+        });
+
         messaging.getToken().then((token) => {
           console.log('Token de registro:', token);
 

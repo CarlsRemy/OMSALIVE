@@ -39,7 +39,7 @@ function initMap() {
 
   // The map, centered at Uluru
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 24,
+    zoom: 12,
     center: uluru,
   });
 
@@ -48,18 +48,22 @@ function initMap() {
     position: Rute,
     map: map,
     title: name1
-  }, {
+  });
+
+
+  let marker2 = new google.maps.Marker({
     position: RuteEnd,
     map: map,
     title: name2
   });
 
   marker.setMap(map);
+  marker2.setMap(map);
   const directionsService = new google.maps.DirectionsService();
 
   const directionsRenderer = new google.maps.DirectionsRenderer({
     map: map,
-    zoom: 45, // Zoom deseado
+    zoom: 12, // Zoom deseado
     center: uluru
   });
 
@@ -72,7 +76,7 @@ function initMap() {
     travelMode: google.maps.TravelMode.TRANSIT,
   };
 
-  directionsService.route(request, function (result, status) {
+  /*directionsService.route(request, function (result, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsRenderer.setDirections(result);
 
@@ -85,16 +89,74 @@ function initMap() {
 
       document.getElementById("map").setAttribute("style", "");
     }
-  });
+  });*/
 
 }
 
 
 
+function initMap2() {
+  // Obtener el mapa y los puntos de inicio y destino
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 8,
+    center: { lat: 19.459080248275242, lng: -70.70606241253469 } // Coordenadas de la ciudad de Santo Domingo
+  });
+
+
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const Ruta = urlParams.get('ruta') || 1;
+
+  var end;
+   var start;
+
+  if (Ruta == 1) {
+    start = new google.maps.LatLng(19.48906106526994, -70.71721851843783); // Punto de inicio
+    end = new google.maps.LatLng(19.42643365555118, - 70.73006629979726); // Punto de destino
+  } else {
+    start = new google.maps.LatLng(19.48731078142793, -70.7190194361155); // Punto de inicio
+    end = new google.maps.LatLng(19.42643365555118,  -70.6590110389465); // Punto de destino
+  }
+
+
+
+  // Configurar la solicitud de ruta
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: google.maps.TravelMode.TRANSIT, // Modo de transporte en tránsito
+    transitOptions: {
+      modes: ['BUS'], // Modo de transporte en autobús
+      routingPreference: google.maps.TransitRoutePreference.FEWER_TRANSFERS // Preferencia de menos trasbordos
+    },
+    unitSystem: google.maps.UnitSystem.METRIC // Sistema métrico
+  };
+
+  // Crear el objeto de servicio de direcciones y hacer la solicitud
+  var directionsService = new google.maps.DirectionsService();
+  directionsService.route(request, function (response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      // Mostrar la ruta en el mapa
+      var directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        directions: response,
+        draggable: true,
+        polylineOptions: {
+          strokeColor: 'blue' // Color de la línea de la ruta
+        }
+      });
+    } else {
+      window.alert('No se encontró la ruta. Error: ' + status);
+    }
+  });
+
+}
+
 (() => {
 
 
-  initMap();
+  initMap2();
 
 
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -111,83 +173,83 @@ function initMap() {
   firebase.initializeApp(firebaseConfig);
 
 
-
-  // Verificamos si el navegador soporta notificaciones
-  if ('Notification' in window) {
-
-
-    new Promise((resolve, reject) => {
-      // Solicitamos permiso al usuario para mostrar notificaciones
-
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-
-          resolve()
-          // Aquí puedes registrar el servicio de mensajería de Firebase
-        } else if (permission === 'denied') {
-          reject('Permiso para notificaciones denegado.');
-        } else if (permission === 'default') {
-          reject('El usuario cerró el cuadro de diálogo de permiso.');
-        }
-      });
-
-    }).then(() => {
-
-      // Obtiene una instancia de Firebase Messaging
-      const messaging = firebase.messaging();
-
-      // Solicita el permiso para recibir notificaciones
-      messaging.requestPermission().then(() => {
-        alert('Permiso concedido')
-        console.log('Permiso concedido');
-
-        // Obtiene el token de registro del dispositivo
-
-        // Registramos un callback para recibir los mensajes
-        messaging.onMessage((payload) => {
-          alert('Mensaje recibido:'+ payload)
-          console.log('Mensaje recibido:', payload);
-          // Aquí puedes hacer lo que necesites con el mensaje recibido
+  /*
+    // Verificamos si el navegador soporta notificaciones
+    if ('Notification' in window) {
+  
+  
+      new Promise((resolve, reject) => {
+        // Solicitamos permiso al usuario para mostrar notificaciones
+  
+        Notification.requestPermission().then(function (permission) {
+          if (permission === 'granted') {
+  
+            resolve()
+            // Aquí puedes registrar el servicio de mensajería de Firebase
+          } else if (permission === 'denied') {
+            reject('Permiso para notificaciones denegado.');
+          } else if (permission === 'default') {
+            reject('El usuario cerró el cuadro de diálogo de permiso.');
+          }
         });
-
-        messaging.getToken().then((token) => {
-          console.log('Token de registro:', token);
-
-          // Envía el mensaje a través de la API de FCM
-          const data = {
-            to: token,
-            notification: {
-              title: 'Título del mensaje',
-              body: 'Contenido del mensaje'
-            }
-          };
-
-          fetch('https://fcm.googleapis.com/fcm/send', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'key=<AIzaSyBnKRkIBBk21MBSZygXCMUKv0sVHR4Tfes>'
-            },
-            body: JSON.stringify(data)
-          }).then(() => {
-            console.log('Mensaje enviado');
-          }).catch((error) => {
-            console.error('Error al enviar el mensaje:', error);
+  
+      }).then(() => {
+  
+        // Obtiene una instancia de Firebase Messaging
+        const messaging = firebase.messaging();
+  
+        // Solicita el permiso para recibir notificaciones
+        messaging.requestPermission().then(() => {
+          alert('Permiso concedido')
+          console.log('Permiso concedido');
+  
+          // Obtiene el token de registro del dispositivo
+  
+          // Registramos un callback para recibir los mensajes
+          messaging.onMessage((payload) => {
+            alert('Mensaje recibido:'+ payload)
+            console.log('Mensaje recibido:', payload);
+            // Aquí puedes hacer lo que necesites con el mensaje recibido
           });
+  
+          messaging.getToken().then((token) => {
+            console.log('Token de registro:', token);
+  
+            // Envía el mensaje a través de la API de FCM
+            const data = {
+              to: token,
+              notification: {
+                title: 'Título del mensaje',
+                body: 'Contenido del mensaje'
+              }
+            };
+  
+            fetch('https://fcm.googleapis.com/fcm/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=<AIzaSyBnKRkIBBk21MBSZygXCMUKv0sVHR4Tfes>'
+              },
+              body: JSON.stringify(data)
+            }).then(() => {
+              console.log('Mensaje enviado');
+            }).catch((error) => {
+              console.error('Error al enviar el mensaje:', error);
+            });
+          });
+        }).catch((error) => {
+          console.error('Error al solicitar el permiso:', error);
         });
-      }).catch((error) => {
-        console.error('Error al solicitar el permiso:', error);
+      }).catch((mensaje) => {
+        console.warn(mensaje);
+  
       });
-    }).catch((mensaje) => {
-      console.warn(mensaje);
-
-    });
-
-
-  } else {
-    console.warn('Este navegador no soporta notificaciones.');
-  }
-
+  
+  
+    } else {
+      console.warn('Este navegador no soporta notificaciones.');
+    }
+  */
 
 
 })()

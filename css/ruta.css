@@ -1,13 +1,50 @@
 #map {
-	width: 100vw;
-	height: 100px;
-	display: block;
-	position: relative;
+	position: absolute;
+	/* Permite posicionar el mapa dentro del contenedor */
+	top: 78px;
+	/* Ajusta la posición vertical del mapa dentro del contenedor */
+	left: 0;
+	/* Ajusta la posición horizontal del mapa dentro del contenedor */
+	height: 50vh;
+	/* Establece la altura del mapa al 100% del contenedor */
+	width: 100%;
+	/*margin-top: 80px;*/
+
 }
 
-.map-container {
-  height: 50vh;
-	width: 98vw;
-	display: block;
+.map-container,
+#map-container {
+	height: 50vh;
+	width: 100%;
 	position: relative;
+	margin-top: 80px;
+}
+
+.asientos {
+	display: grid;
+	gap: 1rem;
+	grid-auto-rows: 95px;
+	grid-template-columns: repeat(auto-fill, 90px);
+	width: 100vw;
+	position: absolute;
+	top: 63.5vh;
+	left: 0;
+
+	align-items: center;
+	justify-items: center;
+	justify-content: center;
+	align-content: center;
+}
+
+.asientos .ocupado {
+	opacity: .5;
+}
+
+.asientos div {
+
+	width: 95px;
+}
+
+.asientos img {
+	width: 90px;
 }

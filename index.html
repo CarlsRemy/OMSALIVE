@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="./css/default.css">
+		<link rel="stylesheet" href="./css/home.css">
+		<title>Map</title>
+	</head>
+	<body>
+		<header>
+			<img src="./img/icon2.png">
+			<h2>OMSALIVE</h2>
+		</header>
+		<section id="rutas">
+
+			<article id="rutaA">
+				<img src="./img/autobus.png">
+				<h5>Ruta A</h5>
+			</article>
+			<article id="rutaB">
+				<img src="./img/autobus.png">
+				<h5>Ruta B</h5>
+			</article>
+		</section>
+	</body>
+	<script> 
+		const rutaA =	document.querySelector("#rutaA");
+		const rutaB =	document.querySelector("#rutaB");
+
+		rutaA.addEventListener("click", ()=>{
+			location.href = "./Ruta.html?ruta=1"
+		});
+
+		rutaB.addEventListener("click", ()=>{
+			location.href = "./Ruta.html?ruta=2"
+		});
+	</script>
+</html>

@@ -1,0 +1,31 @@
+body {
+	margin: 0px;
+	height: 100vh;
+}
+
+nav {
+	background-color: #489048;
+	color: #fff;
+	margin-left: 0px !important;
+}
+
+nav img {
+	height: 75px;
+}
+
+nav h2 {
+	margin: 5px 0px;
+}
+
+nav .fa-question {
+	background-color: #ffffff88;
+	border-radius: 5px;
+	width: 25px;
+	height: 25px;
+}
+
+nav .fa-question {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

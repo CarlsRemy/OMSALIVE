@@ -1,0 +1,12 @@
+article {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	border-bottom: 2px solid black;
+	gap: 10px;
+	padding: 5px 10px;
+}
+
+article img{
+	height: 75px;
+}

@@ -8,4 +8,6 @@
 .map-container {
   height: 50vh;
 	width: 98vw;
+	display: block;
+	position: relative;
 }
